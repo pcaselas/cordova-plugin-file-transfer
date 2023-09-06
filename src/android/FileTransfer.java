@@ -743,6 +743,7 @@ public class FileTransfer extends CordovaPlugin {
                         // connect to server
                         // Open a HTTP connection to the URL based on protocol
                         connection = resourceApi.createHttpConnection(sourceUri);
+                        connection.setInstanceFollowRedirects(false);
                         connection.setRequestMethod("GET");
 
                         // TODO: Make OkHttp use this CookieManager by default.
