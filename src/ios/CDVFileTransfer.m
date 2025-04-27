@@ -442,7 +442,8 @@ static CFIndex WriteDataToStream(NSData* data, CFWriteStreamRef stream)
         }
     }
 
-    NSURL* sourceURL = [NSURL URLWithString:source];
+    NSString* escapedSource = [source stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
+    NSURL* sourceURL = [NSURL URLWithString:escapedSource];
 
     if (!sourceURL) {
         errorCode = INVALID_URL_ERR;
