@@ -442,9 +442,15 @@ static CFIndex WriteDataToStream(NSData* data, CFWriteStreamRef stream)
         }
     }
 
-    NSString* escapedSource = [source stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
-    NSURL* sourceURL = [NSURL URLWithString:escapedSource];
+    NSString* decodedSource = [source stringByRemovingPercentEncoding];
+    
+    if (decodedSource == nil) {        // si la cadena no era un %xx válido
+        decodedSource = source;
+    }
+    NSString* escapedSource = [decodedSource stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
 
+    NSURL* sourceURL = [NSURL URLWithString:escapedSource];
+    
     if (!sourceURL) {
         errorCode = INVALID_URL_ERR;
         NSLog(@"File Transfer Error: Invalid server URL %@", source);
